@@ -25,7 +25,3 @@
 //     className: "com.android.settings.Settings$WifiSettingsActivity",
 //     root: true
 // })
-// log(currentActivity())
-// log(currentPackage())
-
-log(getClip())
