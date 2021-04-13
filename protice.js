@@ -12,6 +12,8 @@ while(temp){
         log('首页界面-成功')
         let mine = text('我的').findOne()
         click(mine.bounds().centerX(),mine.bounds().centerY())
+        sleep(500)
+        className('android.widget.LinearLayout').depth(2).findOne()? log('我关注的吧界面-成功'):''
         temp = false
     }
 }
