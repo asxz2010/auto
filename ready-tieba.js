@@ -85,19 +85,18 @@ while(temp){
             tempr = false 
         }
     }else{
-        teibaJson.gzdb = Utils.getWordsPosition('关注的吧', '注', 'high')
-        if(teibaJson.gzdb.x != '-1'){
-            click(teibaJson.gzdb.x,teibaJson.gzdb.y)
-            sleep(200)
+        if(Utils.isContain('关注的吧')){
+            log('我的界面-成功')
+            teibaJson.gzdb = Utils.getWordsPosition('关注的吧', '注', 'high')
+            if(teibaJson.gzdb.x != '-1'){
+                click(teibaJson.gzdb.x,teibaJson.gzdb.y)
+                sleep(200)
+            }
         }else{
-            if(Utils.isContain('我的贴子')){
-                log('我的界面-成功')
-            }else{
-                let mine = text('我的').findOne()
-                if(mine){
-                    log('贴吧打开-成功')
-                    click(mine.bounds().centerX(),mine.bounds().centerY())
-                }
+            let mine = text('我的').findOne()
+            if(mine){
+                log('贴吧打开-成功')
+                click(mine.bounds().centerX(),mine.bounds().centerY())
             }
         }
     }
