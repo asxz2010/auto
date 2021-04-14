@@ -2,8 +2,9 @@ var Utils= require('Utils.js')
 
 launchApp('百度贴吧')
 
-var temp
+var temp,path,teibaJson
 temp = true
+path = '/sdcard/Pictures/tieba/tieba.json'
 
 sleep(4000)
 while(temp){
@@ -13,10 +14,11 @@ while(temp){
         let mine = text('我的').findOne()
         click(mine.bounds().centerX(),mine.bounds().centerY())
         sleep(500)
-        className('android.widget.LinearLayout').depth(2).findOne()? log('我关注的吧界面-成功'):''
-        temp = false
+        if(className('android.widget.LinearLayout').depth(1).findOne()){
+            log('我的界面-成功')
+            teibaJson
+            temp = false
+        }
     }
 }
-
-
 
