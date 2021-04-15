@@ -99,9 +99,13 @@ const getBaiduWords = level => {
  * @return {Boolean}
  */
 const isContain = (words,level) => {
-    var alive = false, count = 0
-    var a = shell("screencap -p /sdcard/Pictures/screen.png", true)
-    var img = images.read("/sdcard/Pictures/screen.png")
+    var alive = false
+    if(!requestScreenCapture()){
+        toast("请求截图失败")
+        exit()
+    }
+    captureScreen('/sdcard/Pictures/screen.png')
+    var img = images.read('/sdcard/Pictures/screen.png')
     var image = images.toBase64(img, "png", 100)
     var SiteInfo_ocr_Url = level=='high'? 'https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic':'https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic'
     var access_token = get_baidu_access_Token()

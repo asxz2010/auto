@@ -42,15 +42,23 @@ sleep(4000)
 //     }
 // }
 
+// for(let item of baArray){
+//     console.log(item)
+// }
 
 for(let item of baArray){
+    log(1111111)
     while(temp){
+        log(22222)
         sleep(200)
         if(Utils.isContain(item+'吧')){
+            log(333333)
             log(item+'吧界面-已打开')
             temp = Utils.swipeTo()? false:true
         }else{
+            log(555555)
             if(Utils.isContain('编辑')){
+                log(666666)
                 log('我关注的吧界面-成功')
                 posi = Utils.getWordsPosition(item,item.substring(1,2))
                 if(posi.x != '-1'){
@@ -59,17 +67,22 @@ for(let item of baArray){
                     Utils.swipeTo('top')
                 }
             }else{
+                log(777777)
                 if(Utils.isContain('关注的吧','high')){
+                    log(888888)
                     log('我的界面-成功')
                     tiebaJson.gzdb = Utils.getWordsPosition('关注的吧', '注', 'high')
                     if(tiebaJson.gzdb.x != '-1'){
+                        log(999999)
                         Utils.savePathJson(path, tiebaJson)
                         click(tiebaJson.gzdb.x,tiebaJson.gzdb.y)
                         sleep(200)
                     }
                 }else{
+                    log(0000000)
                     let mine = text('我的').findOnce()
                     if(mine){
+                        log(12345)
                         log('贴吧打开-成功')
                         click(mine.bounds().centerX(),mine.bounds().centerY())
                     }
@@ -77,5 +90,6 @@ for(let item of baArray){
             } 
         }
     }
+    log(44444)
     temp = true
 }

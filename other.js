@@ -5,10 +5,12 @@
 
 var Utils= require('Utils.js')
 
-// log(files.ensureDir('/sdcard/Pictures/tieba/tieba.json'))
-
-Utils.swipeTo('bottom')
-
+log(111)
+if(!requestScreenCapture()){
+    toast("请求截图失败")
+    exit()
+}
+captureScreen('/sdcard/Pictures/screen.png')
 
 // // right
 // var x = device.width/9
@@ -16,7 +18,7 @@ Utils.swipeTo('bottom')
 // var m = x*8
 // var n = y
 // right
-// (x,y, m,n)
+// (x,y, m,n)Í
 // left
 // (m,n, x,y)
 // log(swipe(x,y, m,n, 500))
