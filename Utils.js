@@ -3,6 +3,13 @@ const API_Key = "LGZTmkf9AwP78E01jiYpmDyM"
 const Secret_Key = "WGOi6d3tQvtB2B95XZCe2zeEnL5E1rtO"
 
 /**
+ * @description 初始化
+ */
+const init = () => {
+    setScreenMetrics(540, 960)
+}
+
+/**
  * @description 获取百度AI识别token
  * @return {String} 
  */
@@ -182,14 +189,47 @@ const savePathJson = (path,json) => {
     return isSave
 }
 
+/**
+ * @description 滑动
+ * @param {String} dire 
+ * @return {Booleann}
+ */
+const swipeTo = dire =>{
+    let x = device.width/9
+    let y = device.height/2
+    let m = x*8
+    let n = y
+    let a = device.width/2
+    let b = device.height/5
+    let c = device.height
+    let d = c/11*10
+    let isSwipe = false
+    switch (dire){
+        case 'top':
+            isSwipe = swipe(a,d,a,0,500)
+            break
+        case 'bottom':
+            isSwipe = swipe(a,b,a,c,500)
+            break
+        case 'left':
+            isSwipe = swipe(m,n,x,y,300)
+            break
+        default:
+            isSwipe = swipe(x,y,m,n,300)
+    }
+    return isSwipe
+}
+
 
 module.exports = {
     API_Key:API_Key,
     Secret_Key:Secret_Key,
+    init:init,
     getBaiduWords:getBaiduWords,
     clickBaiduWord:clickBaiduWord,
     getPathJson:getPathJson,
     savePathJson:savePathJson,
     getWordsPosition:getWordsPosition,
     isContain:isContain,
+    swipeTo:swipeTo,
 }

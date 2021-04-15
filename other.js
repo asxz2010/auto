@@ -5,26 +5,34 @@
 
 var Utils= require('Utils.js')
 
-console.log(Utils.isContain('关注的吧'))
+// log(files.ensureDir('/sdcard/Pictures/tieba/tieba.json'))
 
-// let aaa = Utils.getWordsPosition('秦时明月','时')
-// log(aaa.x, aaa.y)
-// click(aaa.x, aaa.y)
+Utils.swipeTo('bottom')
 
 
-// var level = 'normal'
-// var SiteInfo_ocr_Url
-// switch (level){
-//     case "high_position":
-//         SiteInfo_ocr_Url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate"
-//         break
-//     case "normal":
-//         SiteInfo_ocr_Url = "https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic"
-//         break
-//     case "high":
-//         SiteInfo_ocr_Url = "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic"
-//         break
-//     default:
-//         SiteInfo_ocr_Url = "https://aip.baidubce.com/rest/2.0/ocr/v1/general"
-// }
-// log(SiteInfo_ocr_Url)
+// // right
+// var x = device.width/9
+// var y = device.height/2
+// var m = x*8
+// var n = y
+// right
+// (x,y, m,n)
+// left
+// (m,n, x,y)
+// log(swipe(x,y, m,n, 500))
+
+
+
+// var a = device.width/2
+// var b = device.height/5
+// var c = device.height
+// var d = b/11*10
+// bottom
+// (a,b, c,d)
+// top
+// (c,d, a,b)
+
+// top
+// swipe(a,d, a,0, 500)
+
+// swipe(a,b, a,c, 500)
