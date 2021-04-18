@@ -6,7 +6,10 @@ const Secret_Key = "WGOi6d3tQvtB2B95XZCe2zeEnL5E1rtO"
  * @description 初始化
  */
 const init = () => {
-    setScreenMetrics(540, 960)
+    if(!requestScreenCapture()){
+        toast("请求截图失败")
+        exit()
+    }
 }
 
 /**
@@ -34,7 +37,8 @@ const get_baidu_access_Token = () => {
  */
 const clickBaiduWord = (word, level) => {
     var isClick=false
-    var a = shell("screencap -p /sdcard/Pictures/screen.png", true)
+    // var a = shell("screencap -p /sdcard/Pictures/screen.png", true)
+    images.captureScreen('/sdcard/Pictures/screen.png')
     var img = images.read("/sdcard/Pictures/screen.png")
     var image = images.toBase64(img, "png", 100)
     var SiteInfo_ocr_Url = level==="high"? "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate":"https://aip.baidubce.com/rest/2.0/ocr/v1/general"
@@ -63,7 +67,8 @@ const clickBaiduWord = (word, level) => {
  * @return {String}
  */
 const getBaiduWords = level => {
-    var a = shell("screencap -p /sdcard/Pictures/screen.png", true)
+    // var a = shell("screencap -p /sdcard/Pictures/screen.png", true)
+    images.captureScreen('/sdcard/Pictures/screen.png')
     var img = images.read("/sdcard/Pictures/screen.png")
     var image = images.toBase64(img, "png", 100)
     switch (level){
@@ -100,11 +105,8 @@ const getBaiduWords = level => {
  */
 const isContain = (words,level) => {
     var alive = false
-    if(!requestScreenCapture()){
-        toast("请求截图失败")
-        exit()
-    }
-    captureScreen('/sdcard/Pictures/screen.png')
+    images.captureScreen('/sdcard/Pictures/screen.png')
+    // shell("screencap -p /sdcard/Pictures/screen.png",true)
     var img = images.read('/sdcard/Pictures/screen.png')
     var image = images.toBase64(img, "png", 100)
     var SiteInfo_ocr_Url = level=='high'? 'https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic':'https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic'
@@ -135,7 +137,8 @@ const isContain = (words,level) => {
  */
 const getWordsPosition = (words, word, level) => {
     var posi = {x:'-1'}
-    var a = shell("screencap -p /sdcard/Pictures/screen.png", true)
+    // var a = shell("screencap -p /sdcard/Pictures/screen.png", true)
+    images.captureScreen('/sdcard/Pictures/screen.png')
     var img = images.read("/sdcard/Pictures/screen.png")
     var image = images.toBase64(img, "png", 100)
     var SiteInfo_ocr_Url = level==="high"? "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate":"https://aip.baidubce.com/rest/2.0/ocr/v1/general"
