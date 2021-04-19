@@ -43,9 +43,9 @@ const get_baidu_access_Token = () => {
  */
 const clickBaiduWord = (word, level) => {
     var isClick=false
-    var res = shell("screencap -p /sdcard/Pictures/screen.png",true)
+    var res = shell("screencap -p /sdcard/Pictures/screen.png")
     if(res.code!=0){
-        images.captureScreen('/sdcard/Pictures/screen.png')
+        captureScreen('/sdcard/Pictures/screen.png')
     }
     var img = images.read("/sdcard/Pictures/screen.png")
     var image = images.toBase64(img, "png", 100)
@@ -75,9 +75,9 @@ const clickBaiduWord = (word, level) => {
  * @return {String}
  */
 const getBaiduWords = level => {
-    var res = shell("screencap -p /sdcard/Pictures/screen.png",true)
+    var res = shell("screencap -p /sdcard/Pictures/screen.png")
     if(res.code!=0){
-        images.captureScreen('/sdcard/Pictures/screen.png')
+        captureScreen('/sdcard/Pictures/screen.png')
     }
     var img = images.read("/sdcard/Pictures/screen.png")
     var image = images.toBase64(img, "png", 100)
@@ -115,9 +115,9 @@ const getBaiduWords = level => {
  */
 const isContain = (words,level) => {
     var alive = false
-    var res = shell("screencap -p /sdcard/Pictures/screen.png",true)
+    var res = shell("screencap -p /sdcard/Pictures/screen.png")
     if(res.code!=0){
-        images.captureScreen('/sdcard/Pictures/screen.png')
+        captureScreen('/sdcard/Pictures/screen.png')
     }
     var img = images.read('/sdcard/Pictures/screen.png')
     var image = images.toBase64(img, "png", 100)
@@ -149,9 +149,9 @@ const isContain = (words,level) => {
  */
 const getWordsPosition = (words, word, level) => {
     var posi = {x:'-1'}
-    var res = shell("screencap -p /sdcard/Pictures/screen.png",true)
+    var res = shell("screencap -p /sdcard/Pictures/screen.png")
     if(res.code!=0){
-        images.captureScreen('/sdcard/Pictures/screen.png')
+        captureScreen('/sdcard/Pictures/screen.png')
     }
     var img = images.read("/sdcard/Pictures/screen.png")
     var image = images.toBase64(img, "png", 100)
@@ -190,9 +190,9 @@ const getWordsPosition = (words, word, level) => {
  */
 const getWordsPositions = (baArr, level) => {
     var posiArr = []
-    var res = shell("screencap -p /sdcard/Pictures/screen.png",true)
+    var res = shell("screencap -p /sdcard/Pictures/screen.png")
     if(res.code!=0){
-        images.captureScreen('/sdcard/Pictures/screen.png')
+        captureScreen('/sdcard/Pictures/screen.png')
     }
     var img = images.read("/sdcard/Pictures/screen.png")
     var image = images.toBase64(img, "png", 100)

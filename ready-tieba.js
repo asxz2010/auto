@@ -12,7 +12,7 @@ tiebaJson = {}
 baArray = ['秦时明月','网易阴阳师','博人传','海贼王','黑色四叶草','鬼灭之刃']
 storages.remove('baArray')
 var baSto = storages.create('baArray')
-baSto.put('baArr', baArr)
+baSto.put('baArr', baArray)
 
 sleep(4000)
 for(let item of baArray){
@@ -27,7 +27,7 @@ for(let item of baArray){
         }else{
             if(Utils.isContain('编辑')){
                 log('我关注的吧界面-成功')
-                Utils.getWordsPositions(baSto.get('baArr'))
+                // Utils.getWordsPositions(baSto.get('baArr'))
 
                 posi = Utils.getWordsPosition(item,item.substring(1,2))
                 if(posi.x != '-1'){
