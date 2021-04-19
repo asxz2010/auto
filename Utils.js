@@ -10,6 +10,12 @@ const init = () => {
         toast("请求截图失败")
         exit()
     }
+    Array.prototype.remove = function(val) {
+        var index = this.indexOf(val)
+        if (index > -1) {
+        this.splice(index, 1)
+        }
+    }
 }
 
 /**
@@ -37,8 +43,10 @@ const get_baidu_access_Token = () => {
  */
 const clickBaiduWord = (word, level) => {
     var isClick=false
-    // var a = shell("screencap -p /sdcard/Pictures/screen.png", true)
-    images.captureScreen('/sdcard/Pictures/screen.png')
+    var res = shell("screencap -p /sdcard/Pictures/screen.png",true)
+    if(res.code!=0){
+        images.captureScreen('/sdcard/Pictures/screen.png')
+    }
     var img = images.read("/sdcard/Pictures/screen.png")
     var image = images.toBase64(img, "png", 100)
     var SiteInfo_ocr_Url = level==="high"? "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate":"https://aip.baidubce.com/rest/2.0/ocr/v1/general"
@@ -67,8 +75,10 @@ const clickBaiduWord = (word, level) => {
  * @return {String}
  */
 const getBaiduWords = level => {
-    // var a = shell("screencap -p /sdcard/Pictures/screen.png", true)
-    images.captureScreen('/sdcard/Pictures/screen.png')
+    var res = shell("screencap -p /sdcard/Pictures/screen.png",true)
+    if(res.code!=0){
+        images.captureScreen('/sdcard/Pictures/screen.png')
+    }
     var img = images.read("/sdcard/Pictures/screen.png")
     var image = images.toBase64(img, "png", 100)
     switch (level){
@@ -105,8 +115,10 @@ const getBaiduWords = level => {
  */
 const isContain = (words,level) => {
     var alive = false
-    images.captureScreen('/sdcard/Pictures/screen.png')
-    // shell("screencap -p /sdcard/Pictures/screen.png",true)
+    var res = shell("screencap -p /sdcard/Pictures/screen.png",true)
+    if(res.code!=0){
+        images.captureScreen('/sdcard/Pictures/screen.png')
+    }
     var img = images.read('/sdcard/Pictures/screen.png')
     var image = images.toBase64(img, "png", 100)
     var SiteInfo_ocr_Url = level=='high'? 'https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic':'https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic'
@@ -137,8 +149,10 @@ const isContain = (words,level) => {
  */
 const getWordsPosition = (words, word, level) => {
     var posi = {x:'-1'}
-    // var a = shell("screencap -p /sdcard/Pictures/screen.png", true)
-    images.captureScreen('/sdcard/Pictures/screen.png')
+    var res = shell("screencap -p /sdcard/Pictures/screen.png",true)
+    if(res.code!=0){
+        images.captureScreen('/sdcard/Pictures/screen.png')
+    }
     var img = images.read("/sdcard/Pictures/screen.png")
     var image = images.toBase64(img, "png", 100)
     var SiteInfo_ocr_Url = level==="high"? "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate":"https://aip.baidubce.com/rest/2.0/ocr/v1/general"
@@ -157,12 +171,63 @@ const getWordsPosition = (words, word, level) => {
             let chars = w.chars
             for(let item of chars){
                 if(item.char == word){
-                    posi = {x:item.location.left,y:item.location.top}
+                    let x = random(item.location.left, item.location.left+item.location.width)
+                    let y = random(item.location.top, item.location.top+item.location.height)
+                    posi = {x:x,y:y}
+                    break
                 }
             }
         }
     })
     return posi
+}
+
+/**
+ * @description 获取所有目标字的坐标
+ * @param {Array} baArr
+ * @param {String} level
+ * @return {Array}
+ */
+const getWordsPositions = (baArr, level) => {
+    var posiArr = []
+    var res = shell("screencap -p /sdcard/Pictures/screen.png",true)
+    if(res.code!=0){
+        images.captureScreen('/sdcard/Pictures/screen.png')
+    }
+    var img = images.read("/sdcard/Pictures/screen.png")
+    var image = images.toBase64(img, "png", 100)
+    var SiteInfo_ocr_Url = level==="high"? "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate":"https://aip.baidubce.com/rest/2.0/ocr/v1/general"
+    var access_token = get_baidu_access_Token()
+    var ocr_Res = http.post(SiteInfo_ocr_Url, {
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded" //连接的请求方式,一般是'content-type': 'application/json',
+        },
+        access_token:access_token,
+        image:image,
+        recognize_granularity:'small'
+    })
+    var json = ocr_Res.body.json().words_result
+    let tiebaArr = baArr
+    if(baArr.length!=0){
+        for(let baItem of baArr ){
+            json.forEach(w=>{
+                if (w.words.indexOf(baItem) != -1) {
+                    let chars = w.chars
+                    for(let item of chars){
+                        if(item.char == baItem.substring(baItem.length-1,baItem.length)){
+                            let x = random(item.location.left, item.location.left+item.location.width)
+                            let y = random(item.location.top, item.location.top+item.location.height)
+                            posiArr.push({x:x,y:y})
+                            tiebaArr.remove(baItem)
+                        }
+                    }
+                }
+            })
+        }
+        let tiebaSto = storages.create('tiebaSto')
+        tiebaSto.put('baArray', tiebaArr)
+    }
+    return posiArr
 }
 
 /**
@@ -202,27 +267,21 @@ const savePathJson = (path,json) => {
  * @return {Booleann}
  */
 const swipeTo = dire =>{
-    let x = device.width/9
-    let y = device.height/2
-    let m = x*8
-    let n = y
-    let a = device.width/2
-    let b = device.height/5
-    let c = device.height
-    let d = c/11*10
+    let w = device.width
+    let h = device.height
     let isSwipe = false
     switch (dire){
         case 'top':
-            isSwipe = swipe(a,d,a,0,500)
+            isSwipe = swipe(random(1,w-1),random(h/11*10,h-1),random(1,w-1),random(1,h/11),random(500,600))
             break
         case 'bottom':
-            isSwipe = swipe(a,b,a,c,500)
+            isSwipe = swipe(random(1,w-1),random(1,h/11),random(1,w-1),random(h/11*10,h-1),random(500,600))
             break
         case 'left':
-            isSwipe = swipe(m,n,x,y,300)
+            isSwipe = swipe(random(w/11*10,w-1),random(h/7*2,h/7*5),random(1,w/11),random(h/7*2,h/7*5),random(300,400))
             break
         default:
-            isSwipe = swipe(x,y,m,n,300)
+            isSwipe = swipe(random(1,w/11),random(h/7*2,h/7*5),random(w/11*10,w-1),random(h/7*2,h/7*5),300)
     }
     return isSwipe
 }
@@ -237,6 +296,7 @@ module.exports = {
     getPathJson:getPathJson,
     savePathJson:savePathJson,
     getWordsPosition:getWordsPosition,
+    getWordsPositions:getWordsPositions,
     isContain:isContain,
     swipeTo:swipeTo,
 }
