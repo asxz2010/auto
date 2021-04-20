@@ -4,15 +4,22 @@ Utils.init()
 
 launch("com.baidu.tieba")
 
-var temp,path,tiebaJson,posi,baArray,sign
+var temp,path,tiebaJson,posi,baArray,sign,flag
 sign = true
 temp = true
+flag = true
 path = '/sdcard/Pictures/tieba/tieba.json'
-tiebaJson = {}
-baArray = ['秦时明月','网易阴阳师','博人传','海贼王','黑色四叶草','鬼灭之刃']
-storages.remove('baArray')
-var baSto = storages.create('baArray')
-baSto.put('baArr', baArray)
+baArray = ['黑色四叶草','秦时明月','网易阴阳师','黑色五叶草','博人传','海贼王','鬼灭之刃']
+// baArray = ['鬼灭之刃']
+
+
+// if(files.exists(path))
+
+tiebaJson = Utils.getPathJson(path)
+if(tiebaJson==undefined){
+    files.write(path,JSON.stringify({}))
+}
+tiebaJson = Utils.getPathJson(path)
 
 sleep(4000)
 for(let item of baArray){
@@ -27,23 +34,27 @@ for(let item of baArray){
         }else{
             if(Utils.isContain('编辑')){
                 log('我关注的吧界面-成功')
-                // Utils.getWordsPositions(baSto.get('baArr'))
-
-                posi = Utils.getWordsPosition(item,item.substring(1,2))
-                if(posi.x != '-1'){
-                    click(posi.x,posi.y)
-                }else{
-                    Utils.swipeTo('top')
+                if(sign){
+                    Utils.SwipeTo()
+                    sleep(2000)
                 }
+                clickBa(item)
             }else{
                 if(Utils.isContain('收藏','high')){
                     log('我的界面-成功')
-                    tiebaJson.gzdb = Utils.getWordsPosition('关注的吧', '注', 'high')
-                    if(tiebaJson.gzdb.x != '-1'){
-                        Utils.savePathJson(path, tiebaJson)
-                        click(tiebaJson.gzdb.x,tiebaJson.gzdb.y)
-                        sleep(200)
+                    if(tiebaJson.gzdb==undefined){
+                        let str = '关注的吧'
+                        tiebaJson.gzdb = Utils.getWordsPosition(str, Utils.getRanWord(str), 'high')
+                        if(tiebaJson.gzdb.x != '-1'){
+                            click(tiebaJson.gzdb.x,tiebaJson.gzdb.y)
+                            Utils.savePathJson(path, tiebaJson)
+                        }
+                    }else{
+                        if(tiebaJson.gzdb.x != '-1'){
+                            click(tiebaJson.gzdb.x,tiebaJson.gzdb.y)
+                        }
                     }
+                    sleep(200)
                 }else{
                     let mine = text('我的').findOnce()
                     if(mine){
@@ -55,4 +66,28 @@ for(let item of baArray){
         }
     }
     temp = true
+}
+
+/**
+ * @description 点击具体贴吧
+ * @param {Strinig} item
+ */
+function clickBa(item){
+    posi = Utils.getWordsPosition(item,Utils.getRanWord(item))
+    if(posi.x != '-1'){
+        click(posi.x,posi.y)
+        sign = true
+    }else{
+        if(flag){
+            Utils.swipeTo('top')
+            flag = !Utils.isContain('已无更多吧')
+            clickBa(item)
+        }else{
+            for(let i=0;i<=1;i++){
+                Utils.SwipeTo()
+                sleep(2000)
+            }
+        }
+        sign = false
+    }
 }

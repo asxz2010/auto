@@ -1,6 +1,14 @@
 
 const API_Key = "LGZTmkf9AwP78E01jiYpmDyM"
 const Secret_Key = "WGOi6d3tQvtB2B95XZCe2zeEnL5E1rtO"
+const w = device.width
+const h = device.height
+Array.prototype.remove = function(val) {
+    var index = this.indexOf(val)
+    if (index > -1) {
+    this.splice(index, 1)
+    }
+}
 
 /**
  * @description 初始化
@@ -9,12 +17,6 @@ const init = () => {
     if(!requestScreenCapture()){
         toast("请求截图失败")
         exit()
-    }
-    Array.prototype.remove = function(val) {
-        var index = this.indexOf(val)
-        if (index > -1) {
-        this.splice(index, 1)
-        }
     }
 }
 
@@ -43,7 +45,7 @@ const get_baidu_access_Token = () => {
  */
 const clickBaiduWord = (word, level) => {
     var isClick=false
-    var res = shell("screencap -p /sdcard/Pictures/screen.png")
+    var res = shell("screencap -p /sdcard/Pictures/screen.png", true)
     if(res.code!=0){
         captureScreen('/sdcard/Pictures/screen.png')
     }
@@ -75,7 +77,7 @@ const clickBaiduWord = (word, level) => {
  * @return {String}
  */
 const getBaiduWords = level => {
-    var res = shell("screencap -p /sdcard/Pictures/screen.png")
+    var res = shell("screencap -p /sdcard/Pictures/screen.png", true)
     if(res.code!=0){
         captureScreen('/sdcard/Pictures/screen.png')
     }
@@ -115,7 +117,7 @@ const getBaiduWords = level => {
  */
 const isContain = (words,level) => {
     var alive = false
-    var res = shell("screencap -p /sdcard/Pictures/screen.png")
+    var res = shell("screencap -p /sdcard/Pictures/screen.png", true)
     if(res.code!=0){
         captureScreen('/sdcard/Pictures/screen.png')
     }
@@ -149,7 +151,7 @@ const isContain = (words,level) => {
  */
 const getWordsPosition = (words, word, level) => {
     var posi = {x:'-1'}
-    var res = shell("screencap -p /sdcard/Pictures/screen.png")
+    var res = shell("screencap -p /sdcard/Pictures/screen.png", true)
     if(res.code!=0){
         captureScreen('/sdcard/Pictures/screen.png')
     }
@@ -183,60 +185,12 @@ const getWordsPosition = (words, word, level) => {
 }
 
 /**
- * @description 获取所有目标字的坐标
- * @param {Array} baArr
- * @param {String} level
- * @return {Array}
- */
-const getWordsPositions = (baArr, level) => {
-    var posiArr = []
-    var res = shell("screencap -p /sdcard/Pictures/screen.png")
-    if(res.code!=0){
-        captureScreen('/sdcard/Pictures/screen.png')
-    }
-    var img = images.read("/sdcard/Pictures/screen.png")
-    var image = images.toBase64(img, "png", 100)
-    var SiteInfo_ocr_Url = level==="high"? "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate":"https://aip.baidubce.com/rest/2.0/ocr/v1/general"
-    var access_token = get_baidu_access_Token()
-    var ocr_Res = http.post(SiteInfo_ocr_Url, {
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded" //连接的请求方式,一般是'content-type': 'application/json',
-        },
-        access_token:access_token,
-        image:image,
-        recognize_granularity:'small'
-    })
-    var json = ocr_Res.body.json().words_result
-    let tiebaArr = baArr
-    if(baArr.length!=0){
-        for(let baItem of baArr ){
-            json.forEach(w=>{
-                if (w.words.indexOf(baItem) != -1) {
-                    let chars = w.chars
-                    for(let item of chars){
-                        if(item.char == baItem.substring(baItem.length-1,baItem.length)){
-                            let x = random(item.location.left, item.location.left+item.location.width)
-                            let y = random(item.location.top, item.location.top+item.location.height)
-                            posiArr.push({x:x,y:y})
-                            tiebaArr.remove(baItem)
-                        }
-                    }
-                }
-            })
-        }
-        let tiebaSto = storages.create('tiebaSto')
-        tiebaSto.put('baArray', tiebaArr)
-    }
-    return posiArr
-}
-
-/**
  * @description 获取本地文件JSON
  * @param {String} path 文件路径
  * @return {JSON}
  */
 const getPathJson = path => {
-    var jsonObj = {}
+    var jsonObj
     if(files.exists(path)){
         jsonObj = JSON.parse(files.read(path))
     }else{
@@ -267,8 +221,7 @@ const savePathJson = (path,json) => {
  * @return {Booleann}
  */
 const swipeTo = dire =>{
-    let w = device.width
-    let h = device.height
+    
     let isSwipe = false
     switch (dire){
         case 'top':
@@ -286,6 +239,39 @@ const swipeTo = dire =>{
     return isSwipe
 }
 
+/**
+ * @description 平滑滑动
+ * @param {String} dire 
+ * @return {Booleann}
+ */
+const SwipeTo = dire => {
+    let isSwipe = false
+    switch (dire){
+        case 'top':
+            isSwipe = Swipe(random(1,w-1),random(h/11*10,h-1),random(1,w-1),random(h/11,h/11*2),random(100,200))
+            break
+        default:
+            isSwipe = Swipe(random(1,w-1),random(h/11,h/11*2),random(1,w-1),random(h/11*10,h-1),random(100,200))
+    }
+    return isSwipe
+}
+
+
+/**
+ * @description 截取字符串中随机的一个字符
+ * @param {String} str 
+ * @return {String} 
+ */
+const getRanWord = str =>{
+    if(str.length>0){
+        let num = random(1,str.length)
+        let word = str.substring(num-1,num)
+        return word
+    }else{
+        log('字符为空')
+    }
+}
+
 
 module.exports = {
     API_Key:API_Key,
@@ -296,7 +282,8 @@ module.exports = {
     getPathJson:getPathJson,
     savePathJson:savePathJson,
     getWordsPosition:getWordsPosition,
-    getWordsPositions:getWordsPositions,
     isContain:isContain,
     swipeTo:swipeTo,
+    SwipeTo:SwipeTo,
+    getRanWord:getRanWord,
 }
