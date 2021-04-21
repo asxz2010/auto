@@ -7,13 +7,8 @@ launch("com.baidu.tieba")
 var temp,path,tiebaJson,posi,baArray,sign,flag
 sign = true
 temp = true
-flag = true
 path = '/sdcard/Pictures/tieba/tieba.json'
-baArray = ['黑色四叶草','秦时明月','网易阴阳师','黑色五叶草','博人传','海贼王','鬼灭之刃']
-// baArray = ['鬼灭之刃']
-
-
-// if(files.exists(path))
+baArray = ['进击的巨人','黑色四叶草','秦时明月','网易阴阳师','黑色五叶草','博人传','海贼王','鬼灭之刃']
 
 tiebaJson = Utils.getPathJson(path)
 if(tiebaJson==undefined){
@@ -35,8 +30,10 @@ for(let item of baArray){
             if(Utils.isContain('编辑')){
                 log('我关注的吧界面-成功')
                 if(sign){
-                    Utils.SwipeTo()
-                    sleep(2000)
+                    for(let i=0;i<=1;i++){
+                        Utils.SwipeTo()
+                        sleep(2000)
+                    }
                 }
                 clickBa(item)
             }else{
@@ -73,21 +70,16 @@ for(let item of baArray){
  * @param {Strinig} item
  */
 function clickBa(item){
-    posi = Utils.getWordsPosition(item,Utils.getRanWord(item))
-    if(posi.x != '-1'){
-        click(posi.x,posi.y)
-        sign = true
-    }else{
-        if(flag){
-            Utils.swipeTo('top')
-            flag = !Utils.isContain('已无更多吧')
-            clickBa(item)
-        }else{
-            for(let i=0;i<=1;i++){
-                Utils.SwipeTo()
-                sleep(2000)
-            }
+    flag = Utils.isContain(item)
+    if(flag){
+        posi = Utils.getWordsPosition(item,Utils.getRanWord(item))
+        if(posi.x != '-1'){
+            click(posi.x,posi.y)
+            sign = true
         }
+    }else{
+        Utils.swipeTo('top')
         sign = false
+        clickBa(item)
     }
 }

@@ -117,7 +117,7 @@ const getBaiduWords = level => {
  */
 const isContain = (words,level) => {
     var alive = false
-    var res = shell("screencap -p /sdcard/Pictures/screen.png", true)
+    var res = shell('screencap -p /sdcard/Pictures/screen.png', true)
     if(res.code!=0){
         captureScreen('/sdcard/Pictures/screen.png')
     }
@@ -127,7 +127,7 @@ const isContain = (words,level) => {
     var access_token = get_baidu_access_Token()
     var ocr_Res = http.post(SiteInfo_ocr_Url, {
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
+            'Content-Type': 'application/x-www-form-urlencoded'
         },
         access_token:access_token,
         image:image
@@ -272,6 +272,21 @@ const getRanWord = str =>{
     }
 }
 
+/**
+ * @description 获取文本文件随机行字符
+ * @param {String} path 
+ */
+const getWaterWords = path => {
+    if(files.exists(path)){
+        let textObj = open(path)
+        let textArr = textObj.readlines()
+        return textArr[random(0,textArr.length-1)]
+    }else{
+        log('文本不存在！')
+        exit()
+    }   
+}
+
 
 module.exports = {
     API_Key:API_Key,
@@ -286,4 +301,5 @@ module.exports = {
     swipeTo:swipeTo,
     SwipeTo:SwipeTo,
     getRanWord:getRanWord,
+    getWaterWords:getWaterWords,
 }

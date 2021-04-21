@@ -36,4 +36,33 @@ let path = '/sdcard/Pictures/tieba/tieba.json'
 // log(1111111111)
 // log(tiebaJson.aaa)
 
-log(Utils.isContain('已无更多吧'))
+// var aaa = 1
+// var ddd = 2
+// log(aaa)
+//  function bbb(){
+//     var ccc =  Utils.isContain('手机')
+//     ccc.then(res=>{
+//         log(res)
+//     })
+// }
+// bbb()
+// log(ddd)
+
+
+// log(texts.readline('2'))
+// log(texts.readlines())
+
+// log(Utils.getWaterWords('/sdcard/Pictures/tieba/jjdjr.txt'))
+
+while(true){
+    sleep(random(2500,3000))
+    var UIArr = id('thread_extend_info').find()
+    for(let item of UIArr){
+        click(item.bounds().centerX(),item.bounds().centerY())
+        sleep(random(2500,3000))
+        Utils.swipeTo()
+        sleep(random(2500,3000))
+    }
+    Utils.swipeTo('top')
+}
+
