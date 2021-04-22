@@ -77,10 +77,11 @@ const clickBaiduWord = (word, level) => {
  * @return {String}
  */
 const getBaiduWords = level => {
-    var res = shell("screencap -p /sdcard/Pictures/screen.png", true)
-    if(res.code!=0){
-        captureScreen('/sdcard/Pictures/screen.png')
-    }
+    // var res = shell("screencap -p /sdcard/Pictures/screen.png", true)
+    // if(res.code!=0){
+    //     captureScreen('/sdcard/Pictures/screen.png')
+    // }
+    captureScreen('/sdcard/Pictures/screen.png')
     var img = images.read("/sdcard/Pictures/screen.png")
     var image = images.toBase64(img, "png", 100)
     switch (level){
@@ -117,10 +118,11 @@ const getBaiduWords = level => {
  */
 const isContain = (words,level) => {
     var alive = false
-    var res = shell('screencap -p /sdcard/Pictures/screen.png', true)
-    if(res.code!=0){
-        captureScreen('/sdcard/Pictures/screen.png')
-    }
+    // var res = shell('screencap -p /sdcard/Pictures/screen.png', true)
+    // if(res.code!=0){
+    //     captureScreen('/sdcard/Pictures/screen.png')
+    // }
+    captureScreen('/sdcard/Pictures/screen.png')
     var img = images.read('/sdcard/Pictures/screen.png')
     var image = images.toBase64(img, "png", 100)
     var SiteInfo_ocr_Url = level=='high'? 'https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic':'https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic'
@@ -151,10 +153,11 @@ const isContain = (words,level) => {
  */
 const getWordsPosition = (words, word, level) => {
     var posi = {x:'-1'}
-    var res = shell("screencap -p /sdcard/Pictures/screen.png", true)
-    if(res.code!=0){
-        captureScreen('/sdcard/Pictures/screen.png')
-    }
+    // var res = shell("screencap -p /sdcard/Pictures/screen.png", true)
+    // if(res.code!=0){
+    //     captureScreen('/sdcard/Pictures/screen.png')
+    // }
+    captureScreen('/sdcard/Pictures/screen.png')
     var img = images.read("/sdcard/Pictures/screen.png")
     var image = images.toBase64(img, "png", 100)
     var SiteInfo_ocr_Url = level==="high"? "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate":"https://aip.baidubce.com/rest/2.0/ocr/v1/general"
@@ -225,7 +228,7 @@ const swipeTo = dire =>{
     let isSwipe = false
     switch (dire){
         case 'top':
-            isSwipe = swipe(random(1,w-1),random(h/11*10,h-1),random(1,w-1),random(1,h/11),random(500,600))
+            isSwipe = swipe(random(1,w-1),random(h/11*9,h/11*10),random(1,w-1),random(1,h/11),random(500,600))
             break
         case 'bottom':
             isSwipe = swipe(random(1,w-1),random(1,h/11),random(1,w-1),random(h/11*10,h-1),random(500,600))
@@ -248,10 +251,10 @@ const SwipeTo = dire => {
     let isSwipe = false
     switch (dire){
         case 'top':
-            isSwipe = Swipe(random(1,w-1),random(h/11*10,h-1),random(1,w-1),random(h/11,h/11*2),random(100,200))
+            isSwipe = Swipe(random(1,w-1),random(h/11*9,h/11*10),random(1,w-1),random(h/11,h/11*2),random(200,300))
             break
         default:
-            isSwipe = Swipe(random(1,w-1),random(h/11,h/11*2),random(1,w-1),random(h/11*10,h-1),random(100,200))
+            isSwipe = Swipe(random(1,w-1),random(h/11,h/11*2),random(1,w-1),random(h/11*10,h-1),random(200,300))
     }
     return isSwipe
 }

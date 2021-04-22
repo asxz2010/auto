@@ -18,7 +18,7 @@ var Utils= require('Utils.js')
 //     log(Utils.getRanWord(aaa))
 // }
 
-let path = '/sdcard/Pictures/tieba/tieba.json'
+// let path = '/sdcard/Pictures/tieba/tieba.json'
 // let aaa = Utils.getPathJson(path)
 // if(aaa == undefined){
 //     log(11111)
@@ -54,15 +54,16 @@ let path = '/sdcard/Pictures/tieba/tieba.json'
 
 // log(Utils.getWaterWords('/sdcard/Pictures/tieba/jjdjr.txt'))
 
-while(true){
-    sleep(random(2500,3000))
-    var UIArr = id('thread_extend_info').find()
-    for(let item of UIArr){
-        click(item.bounds().centerX(),item.bounds().centerY())
-        sleep(random(2500,3000))
-        Utils.swipeTo()
-        sleep(random(2500,3000))
-    }
-    Utils.swipeTo('top')
-}
+// while(true){
+//     sleep(random(2500,3000))
+//     var UIArr = id('thread_extend_info').find()
+//     for(let item of UIArr){
+//         click(item.bounds().centerX(),item.bounds().centerY())
+//         sleep(random(2500,3000))
+//         Utils.swipeTo()
+//         sleep(random(2500,3000))
+//     }
+//     Utils.swipeTo('top')
+// }
 
+Utils.swipeTo('top')

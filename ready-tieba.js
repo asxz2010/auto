@@ -30,11 +30,14 @@ for(let item of baArray){
             if(Utils.isContain('编辑')){
                 log('我关注的吧界面-成功')
                 if(sign){
+                    log(11111)
                     for(let i=0;i<=1;i++){
+                        log(222222)
                         Utils.SwipeTo()
                         sleep(2000)
                     }
                 }
+                log(333333)
                 clickBa(item)
             }else{
                 if(Utils.isContain('收藏','high')){
