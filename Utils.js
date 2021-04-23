@@ -77,11 +77,10 @@ const clickBaiduWord = (word, level) => {
  * @return {String}
  */
 const getBaiduWords = level => {
-    // var res = shell("screencap -p /sdcard/Pictures/screen.png", true)
-    // if(res.code!=0){
-    //     captureScreen('/sdcard/Pictures/screen.png')
-    // }
-    captureScreen('/sdcard/Pictures/screen.png')
+    var res = shell("screencap -p /sdcard/Pictures/screen.png", true)
+    if(res.code!=0){
+        captureScreen('/sdcard/Pictures/screen.png')
+    }
     var img = images.read("/sdcard/Pictures/screen.png")
     var image = images.toBase64(img, "png", 100)
     switch (level){
@@ -118,11 +117,10 @@ const getBaiduWords = level => {
  */
 const isContain = (words,level) => {
     var alive = false
-    // var res = shell('screencap -p /sdcard/Pictures/screen.png', true)
-    // if(res.code!=0){
-    //     captureScreen('/sdcard/Pictures/screen.png')
-    // }
-    captureScreen('/sdcard/Pictures/screen.png')
+    var res = shell('screencap -p /sdcard/Pictures/screen.png', true)
+    if(res.code!=0){
+        captureScreen('/sdcard/Pictures/screen.png')
+    }
     var img = images.read('/sdcard/Pictures/screen.png')
     var image = images.toBase64(img, "png", 100)
     var SiteInfo_ocr_Url = level=='high'? 'https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic':'https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic'
@@ -153,11 +151,10 @@ const isContain = (words,level) => {
  */
 const getWordsPosition = (words, word, level) => {
     var posi = {x:'-1'}
-    // var res = shell("screencap -p /sdcard/Pictures/screen.png", true)
-    // if(res.code!=0){
-    //     captureScreen('/sdcard/Pictures/screen.png')
-    // }
-    captureScreen('/sdcard/Pictures/screen.png')
+    var res = shell("screencap -p /sdcard/Pictures/screen.png", true)
+    if(res.code!=0){
+        captureScreen('/sdcard/Pictures/screen.png')
+    }
     var img = images.read("/sdcard/Pictures/screen.png")
     var image = images.toBase64(img, "png", 100)
     var SiteInfo_ocr_Url = level==="high"? "https://aip.baidubce.com/rest/2.0/ocr/v1/accurate":"https://aip.baidubce.com/rest/2.0/ocr/v1/general"
@@ -224,20 +221,22 @@ const savePathJson = (path,json) => {
  * @return {Booleann}
  */
 const swipeTo = dire =>{
-    
     let isSwipe = false
     switch (dire){
+        case 'ba':
+            isSwipe = swipe(random(1,w-1),random(h-10,h-1),random(1,w-1),random(1,10),random(700,800))
+            break
         case 'top':
-            isSwipe = swipe(random(1,w-1),random(h/11*9,h/11*10),random(1,w-1),random(1,h/11),random(500,600))
+            isSwipe = swipe(random(w/9*2,w/9*7),random(h/11*9,h/11*10),random(w/9*2,w/9*7),random(h/11*2,h/11*3),random(400,500))
             break
         case 'bottom':
-            isSwipe = swipe(random(1,w-1),random(1,h/11),random(1,w-1),random(h/11*10,h-1),random(500,600))
+            isSwipe = swipe(random(w/9*2,w/9*7),random(h/11*2,h/11*3),random(w/9*2,w/9*7),random(h/11*9,h/11*10),random(400,500))
             break
         case 'left':
-            isSwipe = swipe(random(w/11*10,w-1),random(h/7*2,h/7*5),random(1,w/11),random(h/7*2,h/7*5),random(300,400))
+            isSwipe = swipe(random(w/11*9,w/11*10),random(h/7*2,h/7*5),random(w/11,w/11*2),random(h/7*2,h/7*5),random(500,600))
             break
         default:
-            isSwipe = swipe(random(1,w/11),random(h/7*2,h/7*5),random(w/11*10,w-1),random(h/7*2,h/7*5),300)
+            isSwipe = swipe(random(w/11,w/11*2),random(h/7*2,h/7*5),random(w/11*9,w/11*10),random(h/7*2,h/7*5),random(500,600))
     }
     return isSwipe
 }
@@ -251,10 +250,10 @@ const SwipeTo = dire => {
     let isSwipe = false
     switch (dire){
         case 'top':
-            isSwipe = Swipe(random(1,w-1),random(h/11*9,h/11*10),random(1,w-1),random(h/11,h/11*2),random(200,300))
+            isSwipe = Swipe(random(1,w-1),random(h/11*9,h/11*10),random(1,w-1),random(h/10,h/10*2),random(100,200))
             break
         default:
-            isSwipe = Swipe(random(1,w-1),random(h/11,h/11*2),random(1,w-1),random(h/11*10,h-1),random(200,300))
+            isSwipe = Swipe(random(1,w-1),random(h/10,h/10*2),random(1,w-1),random(h/11*10,h-1),random(100,200))
     }
     return isSwipe
 }
@@ -290,6 +289,33 @@ const getWaterWords = path => {
     }   
 }
 
+/**
+ * @description 向上滑动(贴吧刷贴专用)
+ */
+const baSwipeUp = () =>{
+    let isSwipe = false
+    isSwipe = swipe(random(w/9*2,w/9*7),random(h/11*9,h/11*10),random(w/9*2,w/9*7),random(1,10),random(400,500))
+    return isSwipe
+}
+
+/**
+ * @description 检测应用是否未响应
+ */
+const testAppResp = () => {
+    let object = find()
+    if (!object.empty()) {
+        object.forEach(function(obj) {
+            if(obj.text().indexOf('关闭应用') != -1){
+                log('应用无响应，关闭应用')
+                obj.click()
+            }
+        })
+        exit()
+    }else{
+        log("没找到╭(╯^╰)╮")
+    }
+}
+
 
 module.exports = {
     API_Key:API_Key,
@@ -305,4 +331,6 @@ module.exports = {
     SwipeTo:SwipeTo,
     getRanWord:getRanWord,
     getWaterWords:getWaterWords,
+    testAppResp:testAppResp,
+    baSwipeUp:baSwipeUp,
 }

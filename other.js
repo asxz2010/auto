@@ -1,4 +1,5 @@
 var Utils= require('Utils.js')
+
 // Utils.init()
 // var baArray = ['秦时明月','网易阴阳师','博人传','海贼王','黑色四叶草','鬼灭之刃']
 
@@ -56,14 +57,66 @@ var Utils= require('Utils.js')
 
 // while(true){
 //     sleep(random(2500,3000))
-//     var UIArr = id('thread_extend_info').find()
-//     for(let item of UIArr){
-//         click(item.bounds().centerX(),item.bounds().centerY())
-//         sleep(random(2500,3000))
-//         Utils.swipeTo()
-//         sleep(random(2500,3000))
-//     }
+//     var UIArr = id('thread_extend_info').findOnce()
+//     click(UIArr.bounds().centerX(),UIArr.bounds().centerY())
+//     sleep(random(2500,3000))
+//     Utils.swipeTo()
+//     sleep(random(2500,3000))
 //     Utils.swipeTo('top')
 // }
 
-Utils.swipeTo('top')
+// function waterTie(times){
+//     var count = 0
+//     while(count<times){
+//         sleep(random(2500,3000))
+//         var UIObj = id('thread_extend_info').findOnce()
+//         if(UIObj!=null){
+//             click(UIObj.bounds().centerX(),UIObj.bounds().centerY())
+//             sleep(random(2500,3000))
+//             Utils.swipeTo()
+//             sleep(random(2500,3000))
+//         }
+//         log(count)
+//         count == times-1? '':Utils.swipeTo('top')
+//         count++
+//     }
+//     Utils.swipeTo()
+// }
+// waterTie(3)
+
+// clickBa('进击的巨人')
+// function clickBa(name){
+//     var sign
+//     var flag = Utils.isContain(name)
+//     if(flag){
+//         var posi = Utils.getWordsPosition(name,Utils.getRanWord(name))
+//         if(posi.x != '-1'){
+//             click(posi.x,posi.y)
+//             sleep(500)
+//             sign = true
+//             return true
+//         }
+//     }else{
+//         Utils.swipeTo('top')
+//         sign = false
+//         clickBa(name)
+//     }
+// }
+
+// let aaa = clickBa('进击的巨人')
+// log(aaa)
+
+// var UIArr = id('thread_extend_info').findOnce()
+// log(UIArr)
+
+// swipe(random(w/9*2,w/9*7),random(h/11*9,h/11*10),random(w/9*2,w/9*7),random(1,10),random(400,500))
+
+// let tempUi = id('pb_editor_tool_comment_reply_text').findOnce()
+//             if(tempUi!=null){
+//                 click(tempUi.bounds().centerX(),tempUi.bounds().centerY())
+//                 sleep(500)
+//                 let text = Utils.getWaterWords('/sdcard/Pictures/tieba/jjdjr.txt')
+//                 className('android.widget.EditText').findOnce().setText(text)
+//             }
+
+log(depth(11).find().length)
