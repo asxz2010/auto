@@ -119,4 +119,24 @@ var Utils= require('Utils.js')
 //                 className('android.widget.EditText').findOnce().setText(text)
 //             }
 
-log(depth(11).find().length)
+// var UIObj = id('thread_extend_info').find()
+// log(UIObj.length)
+
+// for(let item of UIObj){
+//     log(item.text())
+// }
+
+// var img = images.read("/sdcard/Pictures/tieba/1.png")
+// var image = images.toBase64(img, "png", 100)
+
+// var path = "/sdcard/Pictures/temp.txt"
+// var img = images.read("/sdcard/Pictures/screen.png")
+// var imgObj = images.fromBase64(img)
+// className('android.widget.EditText').findOnce().setText(imgObj)
+// var image = images.toBase64(img, "png", 100)
+// files.write(path, image)
+// log(image)
+
+let text = Utils.getWaterWords('/sdcard/Pictures/tieba/hzw.txt')
+log(text)
+// className('android.widget.EditText').findOnce().setText(text)
