@@ -137,6 +137,67 @@ var Utils= require('Utils.js')
 // files.write(path, image)
 // log(image)
 
-let text = Utils.getWaterWords('/sdcard/Pictures/tieba/hzw.txt')
-log(text)
+// let text = Utils.getWaterWords('/sdcard/Pictures/tieba/hzw.txt')
+// log(text)
 // className('android.widget.EditText').findOnce().setText(text)
+
+// Utils.SwipeTo()
+
+// Utils.tieBaRanSwipe('down')
+// Utils.tieBaRanSwipe()
+
+// function ranSwipe(){
+//     for(let i=0;i<=random(3,7);i++){
+//         if(i===3 || i===6){
+//             Utils.tieBaRanSwipe('down')
+//         }else{
+//             Utils.tieBaRanSwipe()
+//         }
+//         sleep(3000)
+//     }
+// }
+
+// ranSwipe()
+
+threads.start(function(){
+    let flag = true
+    while(true){
+        let UIObj = text('关闭应用').findOnce()
+        if(UIObj!=null){
+            log('应用无响应，关闭应用')
+            UIObj.click()
+        }else{
+            log('没找到╭(╯^╰)╮')
+        }
+        sleep(1000)
+    }
+})
+while(true){
+    log("脚本主线程")
+    sleep(3000)
+}
+
+// threads.start(function(){
+//     //在新线程执行的代码
+//     while(true){
+//         log("子线程");
+//         sleep(1000)
+//     }
+// });
+// while(true){
+//     log("脚本主线程");
+//     sleep(1000)
+// }
+
+
+
+    // let UIObj = text('关闭应用').findOnce()
+    // log(UIObj)
+    // if(UIObj!=null){
+    //     log('应用无响应，关闭应用')
+    //     UIObj.click()
+    // }else{
+    //     log('没找到╭(╯^╰)╮')
+    // }
+    // sleep(1000)
+

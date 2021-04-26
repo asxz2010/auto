@@ -18,6 +18,7 @@ const init = () => {
         toast("请求截图失败")
         exit()
     }
+    setScreenMetrics(540, 960)
 }
 
 /**
@@ -258,6 +259,24 @@ const SwipeTo = dire => {
     return isSwipe
 }
 
+/**
+ * @description 向上滑动(贴吧刷贴专用)
+ */
+const baSwipeUp = () =>{
+    let isSwipe = false
+    isSwipe = swipe(random(w/9*2,w/9*7),random(h/11*9,h/11*10),random(w/9*2,w/9*7),random(1,10),random(400,500))
+    return isSwipe
+}
+
+/**
+ * @description 贴子中随意上下滑动
+ * @param {String} dire 
+ * @returns {Boolean}
+ */
+const tieBaRanSwipe = dire =>{
+    let isSwipe = false
+    isSwipe = dire=='down'? Swipe(random(w/10,w/10*9),random(0.17*h,0.2*h),random(w/10,w/10*9),random(h/10*9,h/10*8),random(50,300)):Swipe(random(w/10,w/10*9),random(h/10*9,h/10*8),random(w/10,w/10*9),random(0.17*h,0.2*h),random(150,300))
+}
 
 /**
  * @description 截取字符串中随机的一个字符
@@ -290,30 +309,22 @@ const getWaterWords = path => {
 }
 
 /**
- * @description 向上滑动(贴吧刷贴专用)
- */
-const baSwipeUp = () =>{
-    let isSwipe = false
-    isSwipe = swipe(random(w/9*2,w/9*7),random(h/11*9,h/11*10),random(w/9*2,w/9*7),random(1,10),random(400,500))
-    return isSwipe
-}
-
-/**
  * @description 检测应用是否未响应
+ * @param {String} path
  */
-const testAppResp = () => {
-    let object = find()
-    if (!object.empty()) {
-        object.forEach(function(obj) {
-            if(obj.text().indexOf('关闭应用') != -1){
+const testAppResp = path => {
+    threads.start(function(){
+        while(true){
+            let UIObj = text('关闭应用').findOnce()
+            if(UIObj!=null){
                 log('应用无响应，关闭应用')
-                obj.click()
+                UIObj.click()
+                sleep(5000)
+                launch(path)
             }
-        })
-        exit()
-    }else{
-        log("没找到╭(╯^╰)╮")
-    }
+            sleep(10000)
+        }
+    })
 }
 
 
@@ -333,4 +344,5 @@ module.exports = {
     getWaterWords:getWaterWords,
     testAppResp:testAppResp,
     baSwipeUp:baSwipeUp,
+    tieBaRanSwipe:tieBaRanSwipe,
 }
