@@ -37,8 +37,9 @@
 
 "ui";
 ui.layout(
-    <vertical>
-        <button text="第一个按钮"/>
-        <button text="第二个按钮"/>
-    </vertical>
+    <frame>
+        <button id="ok" text="确定"/>
+    </frame>
 );
+//通过ui.ok获取到按钮控件
+toast(ui.ok.getText());
