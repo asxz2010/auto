@@ -322,7 +322,7 @@ const testAppResp = path => {
                 sleep(5000)
                 launch(path)
             }
-            sleep(10000)
+            sleep(15000)
         }
     })
 }

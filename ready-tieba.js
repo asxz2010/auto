@@ -13,19 +13,19 @@ temp = true
 path = '/sdcard/Pictures/tieba/tieba.json'
 baArray = [
     {
-        name:'海贼王',
-        waterTxtPath:'/sdcard/Pictures/tieba/hzw.txt',
-        waterTimes: '4'
+        name:'火影忍者',
+        waterTxtPath:'/sdcard/Pictures/tieba/public.txt',
+        waterTimes: '100'
     },
     {
-        name:'火影忍者',
-        waterTxtPath:'/sdcard/Pictures/tieba/hyrz.txt',
-        waterTimes: '5'
+        name:'海贼王',
+        waterTxtPath:'/sdcard/Pictures/tieba/public.txt',
+        waterTimes: '100'
     },
     {
         name:'进击的巨人',
         waterTxtPath:'/sdcard/Pictures/tieba/jjdjr.txt',
-        waterTimes: '3'
+        waterTimes: '100'
     }
 ]
 
@@ -48,7 +48,7 @@ for(let item of baArray){
             if(Utils.isContain('编辑')){
                 log('我关注的吧界面-成功')
                 if(sign){
-                    for(let i=0;i<=1;i++){
+                    for(let i=0;i<=2;i++){
                         Utils.SwipeTo()
                         sleep(2000)
                     }
@@ -84,6 +84,7 @@ for(let item of baArray){
         }
     }
     temp = true
+    threads.shutDownAll()
 }
 
 /**
@@ -117,8 +118,9 @@ function waterTie(times,waterPath){
     while(count<times){
         sleep(random(3000,6000))
         Utils.baSwipeUp()
+        sleep(random(3000,6000))
         var UIObj = id('thread_extend_info').findOnce()
-        if(UIObj!=null&&Utils.isContain('回复于')){
+        if(UIObj!=null&&Utils.isContain('复于')){
             if(UIObj.text() != str_temp){
                 str_temp = UIObj.text()
                 click(UIObj.bounds().centerX(),UIObj.bounds().centerY())
