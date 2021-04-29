@@ -7,84 +7,121 @@ Utils.init()
 Utils.testAppResp(appPackageName)
 
 
-var temp,path,tiebaJson,posi,baArray,sign,flag,str_temp
+var temp,path,tiebaJson,posi,baArray,sign,flag,str_temp,start,commonPath
 sign = true
 temp = true
+start = true
 path = '/sdcard/Pictures/tieba/tieba.json'
-baArray = [
-    {
-        name:'火影忍者',
-        waterTxtPath:'/sdcard/Pictures/tieba/public.txt',
-        waterTimes: '100'
-    },
-    {
-        name:'海贼王',
-        waterTxtPath:'/sdcard/Pictures/tieba/public.txt',
-        waterTimes: '100'
-    },
-    {
-        name:'进击的巨人',
-        waterTxtPath:'/sdcard/Pictures/tieba/jjdjr.txt',
-        waterTimes: '100'
+commonPath = '/sdcard/Pictures/tieba/'
+baArray = []
+// baArray = [
+//     {
+//         name:'海贼王',
+//         waterTxtPath:'/sdcard/Pictures/tieba/public.txt',
+//         waterTimes: '3'
+//     },
+//     {
+//         name:'火影忍者',
+//         waterTxtPath:'/sdcard/Pictures/tieba/public.txt',
+//         waterTimes: '4'
+//     },
+//     {
+//         name:'进击的巨人',
+//         waterTxtPath:'/sdcard/Pictures/tieba/jjdjr.txt',
+//         waterTimes: '5'
+//     }
+// ]
+
+let baInfoStr = files.read('/sdcard/Pictures/tieba/ba.txt')
+let baInfoArr = baInfoStr.split(";")
+for(let baItem of baInfoArr){
+    let baInfo = baItem.split(",")
+    if(baInfo.length!=3){
+        toast('漏填或多填，每组应是3项信息')
+        exit()
     }
-]
 
-tiebaJson = Utils.getPathJson(path)
-if(tiebaJson==undefined){
-    files.write(path,JSON.stringify({}))
+    let num = Number(baInfo[1])
+    if(isNaN(num)){
+        toast('请填写正确的次数格式！')
+        exit()
+    }else if(baInfo[2].indexOf('.txt')<0){
+        toast('水贴的文本文件名错误！')
+        exit()
+    }else if(!files.exists(commonPath+baInfo[2])){
+        toast('水贴的文本文件不存在！')
+        exit()
+    }else{
+        baArray.push({
+            name: baInfo[0],
+            waterTimes: baInfo[1],
+            waterTxtPath: commonPath+baInfo[2]
+        })
+    }
 }
-tiebaJson = Utils.getPathJson(path)
 
-appFlag? '':sleep(4000)
-for(let item of baArray){
-    while(temp){
-        sleep(200)
-        if(Utils.isContain('最新')&&Utils.isContain('精华')){
-            if(Utils.swipeTo()){
-                sleep(1000)
-                temp = Utils.isContain('编辑')? false:true
-            }
-        }else{
-            if(Utils.isContain('编辑')){
-                log('我关注的吧界面-成功')
-                if(sign){
-                    for(let i=0;i<=2;i++){
-                        Utils.SwipeTo()
-                        sleep(2000)
+while(start){
+    sleep(3000)
+    if(baArray.length>0){
+        tiebaJson = Utils.getPathJson(path)
+        if(tiebaJson==undefined){
+            files.write(path,JSON.stringify({}))
+        }
+        tiebaJson = Utils.getPathJson(path)
+
+        appFlag? '':sleep(4000)
+        for(let item of baArray){
+            while(temp){
+                sleep(200)
+                if(Utils.isContain('最新')&&Utils.isContain('精华')){
+                    if(Utils.swipeTo()){
+                        sleep(1000)
+                        temp = Utils.isContain('编辑')? false:true
                     }
-                }
-                if(clickBa(item.name)){
-                    log('/*************** '+item.name+'吧 ***************/')
-                    waterTie(item.waterTimes,item.waterTxtPath)
-                }
-            }else{
-                if(Utils.isContain('收藏','high')){
-                    log('我的界面-成功')
-                    if(tiebaJson.gzdb==undefined){
-                        let str = '关注的吧'
-                        tiebaJson.gzdb = Utils.getWordsPosition(str, Utils.getRanWord(str), 'high')
-                        if(tiebaJson.gzdb.x != '-1'){
-                            click(tiebaJson.gzdb.x,tiebaJson.gzdb.y)
-                            Utils.savePathJson(path, tiebaJson)
+                }else{
+                    if(Utils.isContain('编辑')){
+                        log('我关注的吧界面-成功')
+                        if(sign){
+                            for(let i=0;i<=2;i++){
+                                Utils.SwipeTo()
+                                sleep(2000)
+                            }
+                        }
+                        if(clickBa(item.name)){
+                            log('/*************** '+item.name+'吧 ***************/')
+                            waterTie(item.waterTimes,item.waterTxtPath)
                         }
                     }else{
-                        if(tiebaJson.gzdb.x != '-1'){
-                            click(tiebaJson.gzdb.x,tiebaJson.gzdb.y)
+                        if(Utils.isContain('收藏','high')){
+                            log('我的界面-成功')
+                            if(tiebaJson.gzdb==undefined){
+                                let str = '关注的吧'
+                                tiebaJson.gzdb = Utils.getWordsPosition(str, Utils.getRanWord(str), 'high')
+                                if(tiebaJson.gzdb.x != '-1'){
+                                    click(tiebaJson.gzdb.x,tiebaJson.gzdb.y)
+                                    Utils.savePathJson(path, tiebaJson)
+                                }
+                            }else{
+                                if(tiebaJson.gzdb.x != '-1'){
+                                    click(tiebaJson.gzdb.x,tiebaJson.gzdb.y)
+                                }
+                            }
+                            sleep(200)
+                        }else{
+                            let mine = text('我的').findOnce()
+                            if(mine){
+                                log('贴吧打开-成功')
+                                click(mine.bounds().centerX(),mine.bounds().centerY())
+                            }
                         }
-                    }
-                    sleep(200)
-                }else{
-                    let mine = text('我的').findOnce()
-                    if(mine){
-                        log('贴吧打开-成功')
-                        click(mine.bounds().centerX(),mine.bounds().centerY())
-                    }
+                    } 
                 }
-            } 
+            }
+            temp = true
+            threads.shutDownAll()
         }
-    }
-    temp = true
-    threads.shutDownAll()
+        start = false
+    }    
 }
 
 /**
