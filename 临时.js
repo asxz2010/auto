@@ -1,3 +1,4 @@
+var Utils= require('Utils.js')
 // "ui";
 // var appName = "我爱挂机";
 // const appId="01"
@@ -226,10 +227,52 @@
 //    });
 // });
 
+// var str_temp = ''
 
-var Utils= require('Utils.js')
-var UIObj = id('thread_extend_info').find()
-for(let item of UIObj){
-    log(item.text())
-}
-// click(UIObj.bounds().centerX(),UIObj.bounds().centerY())
+// var UIObj = id('thread_extend_info').find()
+// log(UIObj.length)
+// log(UIObj[UIObj.length-1].text())
+// log(UIObj)
+// if(UIObj.length>0){
+//     var tempUI = UIObj[UIObj.length-1]
+//     if(tempUI.text() != str_temp){
+//         log(tempUI.text())
+//         click(tempUI.bounds().centerX(),tempUI.bounds().centerY())
+//     }
+// }
+
+
+// Utils.baSwipeUp()
+
+// id = pb_first_floor_location_container
+// id = pb_head_owner_info_user_name
+// if(text('热门').findOnce()&&text('精华').findOnce()&&text('最新').findOnce()){
+//     log(11111111)
+// }
+
+// var flag,posi,sign
+// // log(clickBa('博人传'))
+// if(clickBa('博人传')){
+//     log(11111111)
+// }else{
+//     log(222222)
+// }
+
+// function clickBa(name){
+//     flag = Utils.isContain(name)
+//     if(flag){
+//         posi = Utils.getWordsPosition(name,Utils.getRanWord(name))
+//         if(posi.x != '-1'){
+//             click(posi.x,posi.y)
+//             sleep(500)
+//             sign = true
+//         }
+//     }else{
+//         Utils.swipeTo('top')
+//         sign = false
+//         clickBa(name)
+//     }
+//     return sign
+// }
+
+shell("screencap /sdcard/Pictures/screen2.png")
