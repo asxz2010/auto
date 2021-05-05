@@ -12,10 +12,10 @@ sign = true
 temp = true
 start = true
 path = '/sdcard/Pictures/tieba/tieba.json'
-// commonPath = '/sdcard/Pictures/tieba/'
 commonPath = '/storage/emulated/0/Pictures/tieba/'
 baArray = []
 
+/***************  ***************/
 let baInfoStr = files.read('/sdcard/Pictures/tieba/ba.txt')
 let baInfoArr = baInfoStr.split(";")
 for(let baItem of baInfoArr){
@@ -56,11 +56,9 @@ while(start){
         appFlag? '':sleep(4000)
         for(let item of baArray){
             while(temp){
-                log(1111111)
                 sleep(200)
-                // if(Utils.isContain('最新')&&Utils.isContain('精华')){
-                if(text('热门').findOnce()&&text('精华').findOnce()&&text('最新').findOnce()){
-                    log(22222222222)
+                if(text('精华').findOnce()&&text('最新').findOnce()){
+                    log('/*************** '+item.name+'吧 ***************/')
                     if(Utils.swipeTo()){
                         sleep(random(3000,5000))
                         temp = Utils.isContain('编辑')? false:true
@@ -68,7 +66,6 @@ while(start){
                 }else{
                     if(Utils.isContain('编辑')){
                         log('我关注的吧界面-成功')
-                        log(sign)
                         if(sign){
                             for(let i=0;i<=2;i++){
                                 Utils.SwipeTo()
@@ -158,20 +155,27 @@ function waterTie(times,waterPath){
                     if(tempUi!=null){
                         click(tempUi.bounds().centerX(),tempUi.bounds().centerY())
                         sleep(500)
-                        let text = Utils.getWaterWords(waterPath)
-                        if(className('android.widget.EditText').findOnce().setText(text)){
-                            let send_text = '发表'
-                            if(Utils.isContain(send_text)){
-                                if(tiebaJson.send==undefined){
-                                    tiebaJson.send = Utils.getWordsPosition(send_text,Utils.getRanWord(send_text))
-                                    Utils.savePathJson(path, tiebaJson)
+                        let inputFlag = true    // 查找文本框
+                        while(inputFlag){
+                            let textInput = className('android.widget.EditText').findOnce()
+                            if(textInput!=null){
+                                let text = Utils.getWaterWords(waterPath)
+                                textInput.setText(text)
+                                let send_text = '发表'
+                                if(Utils.isContain(send_text)){
+                                    if(tiebaJson.send==undefined){
+                                        tiebaJson.send = Utils.getWordsPosition(send_text,Utils.getRanWord(send_text))
+                                        Utils.savePathJson(path, tiebaJson)
+                                    }
+                                    click(tiebaJson.send.x,tiebaJson.send.y)
+                                    sleep(random(3000,5000))
+                                    let noUi = id('no').findOnce()  // 判断是否需要关注并发表
+                                    noUi==null? '':noUi.click()
                                 }
-                                click(tiebaJson.send.x,tiebaJson.send.y)
-                                sleep(random(3000,5000))
-                                let noUi = id('no').findOnce()  // 判断是否需要关注并发表
-                                noUi==null? '':noUi.click()
+                                inputFlag = false
                             }
                         }
+                        
                     }
                     backTieList()
                 }
