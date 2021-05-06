@@ -1,50 +1,23 @@
 var Utils= require('Utils.js')
 
-
 var appFlag=false,appPackageName = 'com.baidu.tieba'
 currentPackage()==appPackageName? appFlag=true:launch(appPackageName)
 Utils.init()
 Utils.testAppResp(appPackageName)
 
-
-var temp,path,tiebaJson,posi,baArray,sign,flag,str_temp,start,commonPath
+var temp,path,tiebaJson,posi,baArray,sign,flag,str_temp,start
 sign = true
 temp = true
 start = true
 path = '/sdcard/Pictures/tieba/tieba.json'
-commonPath = '/storage/emulated/0/Pictures/tieba/'
 baArray = []
 
-/***************  ***************/
-let baInfoStr = files.read('/sdcard/Pictures/tieba/ba.txt')
-let baInfoArr = baInfoStr.split(";")
-for(let baItem of baInfoArr){
-    let baInfo = baItem.split(",")
-    if(baInfo.length!=3){
-        toast('漏填或多填，每组应是3项信息')
-        exit()
-    }
-
-    let num = Number(baInfo[1])
-    if(isNaN(num)){
-        toast('请填写正确的次数格式！')
-        exit()
-    }else if(baInfo[2].indexOf('.txt')<0){
-        toast('水贴的文本文件名错误！')
-        exit()
-    }else if(!files.exists(commonPath+baInfo[2])){
-        toast('水贴的文本文件不存在！')
-        exit()
-    }else{
-        baArray.push({
-            name: baInfo[0],
-            waterTimes: baInfo[1],
-            waterTxtPath: commonPath+baInfo[2]
-        })
-    }
-}
-
-while(start){
+/*************** 获取前台信息 start ***************/
+events.on("baString", function(baString){
+    baArray = JSON.parse(baString)
+})
+/*************** 获取前台信息 end ***************/
+setTimeout(()=>{
     sleep(3000)
     if(baArray.length>0){
         tiebaJson = Utils.getPathJson(path)
@@ -106,8 +79,10 @@ while(start){
             threads.shutDownAll()
         }
         start = false
-    }    
-}
+    }else{
+        exit()
+    }
+}, 3000)
 
 /**
  * @description 点击具体贴吧
@@ -150,7 +125,7 @@ function waterTie(times,waterPath){
                 sleep(random(3000,6000))
                 if(id('pb_head_owner_info_user_name').findOnce()!=null){    // 是否已经进入贴子
                     ranSwipe()
-                    // *************** 发送水贴内容开始 ***************
+                    /*************** 发送水贴内容 start ***************/
                     let tempUi = id('pb_editor_tool_comment_reply_text').findOnce()
                     if(tempUi!=null){
                         click(tempUi.bounds().centerX(),tempUi.bounds().centerY())
@@ -179,7 +154,7 @@ function waterTie(times,waterPath){
                     }
                     backTieList()
                 }
-                // *************** 发送水贴内容结束 ***************
+                /*************** 发送水贴内容 end ***************/
                 sleep(random(2500,3000))
                 count++
                 log('水贴 +'+count)

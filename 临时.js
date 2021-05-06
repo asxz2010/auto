@@ -1,4 +1,4 @@
-var Utils= require('Utils.js')
+// var Utils= require('Utils.js')
 // "ui";
 // var appName = "我爱挂机";
 // const appId="01"
@@ -266,7 +266,7 @@ var Utils= require('Utils.js')
 //             click(posi.x,posi.y)
 //             sleep(500)
 //             sign = true
-//         }
+//         } 
 //     }else{
 //         Utils.swipeTo('top')
 //         sign = false
@@ -275,4 +275,19 @@ var Utils= require('Utils.js')
 //     return sign
 // }
 
-shell("screencap /sdcard/Pictures/screen2.png")
+//监听say事件
+var baArray=[],flag=true
+events.on("baString", function(baString){
+    log(baString)
+    baArray = JSON.parse(baString)
+})
+
+setTimeout(()=>{
+    while(flag){
+        sleep(1000)
+        log(baArray.length)
+        if(baArray.length>0){
+            log(123245)
+        }
+    }
+},6000)
