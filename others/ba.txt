@@ -1,1 +1,1 @@
-博人传,1,public.txt;网易阴阳师,1,public.txt;海贼王,1,public.txt;进击的巨人,1,jjdjr.txt
+鬼灭之刃,2,gmzr.txt;进击的巨人,2,jjdjr.txt;网易阴阳师,2,wyyys.txt
