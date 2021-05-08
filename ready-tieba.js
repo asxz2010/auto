@@ -5,7 +5,7 @@ currentPackage()==appPackageName? appFlag=true:launch(appPackageName)
 Utils.init()
 Utils.testAppResp(appPackageName)
 
-var temp,path,tiebaJson,posi,baArray,sign,flag,str_temp,start
+var temp,path,tiebaJson,posi,baArray,sign,flag,str_temp,start,water_temp,text_temp
 sign = true
 temp = true
 start = true
@@ -90,10 +90,14 @@ setTimeout(()=>{
  */
 function clickBa(name){
     sleep(1000)
-    flag = Utils.isContain(name)
+    let level = ''
+    if(/^[a-zA-Z0-9]+$/.test(name)){    // 吧名是否包含数字和字母
+        level = 'high'
+    }
+    flag = Utils.isContain(name,level)
     sign = false
     if(flag){
-        posi = Utils.getWordsPosition(name,Utils.getRanWord(name))
+        posi = Utils.getWordsPosition(name,Utils.getRanWord(name),level)
         if(posi.x != '-1'){
             click(posi.x,posi.y)
             sleep(500)
@@ -117,11 +121,33 @@ function waterTie(times,waterPath){
     Utils.baSwipeUp()
     while(count<times){
         sleep(random(3000,6000))
-        var UIObj = id('thread_extend_info').findOnce() // 查找贴子控件
-        if(UIObj!=null&&Utils.isContain('复于')){
-            if(UIObj.text() != str_temp){ // 判断是否水过贴
-                str_temp = UIObj.text()
-                click(UIObj.bounds().centerX(),UIObj.bounds().centerY())
+        /*************** 下次发贴的文字 start ***************/
+        let abstract_UI = id('thread_card_abstract').findOnce()
+        let title_UI = id('thread_card_title').findOnce()
+        if(abstract_UI!=null){
+            if(abstract_UI.text().length >= 15){
+                water_temp = abstract_UI.text().substring(0,15)
+                if(abstract_UI.text().length >= 25){
+                    water_temp = abstract_UI.text().substring(0,25)
+                }
+            }
+        }else if(title_UI!=null){
+            if(title_UI.text().length >= 15){
+                water_temp = title_UI.text().substring(0,15)
+                if(title_UI.text().length >= 25){
+                    water_temp = title_UI.text().substring(0,25)
+                }
+            }
+        }else{
+            water_temp = Utils.getWaterWords(waterPath)
+        }
+        log('其他贴子的贴文：'+water_temp)
+        /*************** 下次发贴的文字 end ***************/
+        let cardUI = id('thread_card_root').findOnce() // 查找贴子控件
+        log(cardUI)
+        if(cardUI!=null){
+            // if(cardUI.drawingOrder() != str_temp){ // 判断是否水过贴
+                cardUI.click()
                 sleep(random(3000,6000))
                 if(id('pb_head_owner_info_user_name').findOnce()!=null){    // 是否已经进入贴子
                     ranSwipe()
@@ -134,8 +160,9 @@ function waterTie(times,waterPath){
                         while(inputFlag){
                             let textInput = className('android.widget.EditText').findOnce()
                             if(textInput!=null){
-                                let text = Utils.getWaterWords(waterPath)
-                                textInput.setText(text)
+                                text_temp = count===0? Utils.getWaterWords(waterPath):water_temp
+                                log('当前贴文'+text_temp)
+                                textInput.setText(text_temp)
                                 let send_text = '发表'
                                 if(Utils.isContain(send_text)){
                                     if(tiebaJson.send==undefined){
@@ -150,15 +177,14 @@ function waterTie(times,waterPath){
                                 inputFlag = false
                             }
                         }
-                        
                     }
-                    backTieList()
+                    /*************** 发送水贴内容 end ***************/
                 }
-                /*************** 发送水贴内容 end ***************/
+                backTieList()
                 sleep(random(2500,3000))
                 count++
                 log('水贴 +'+count)
-            }
+            // }
         }
         count == times? '':Utils.baSwipeUp()
     }
@@ -184,7 +210,7 @@ function ranSwipe(){
 function backTieList(){
     Utils.swipeTo()
     sleep(random(3000,4000))
-    if(text('精华').findOnce()==null||text('最新').findOnce()==null){
+    if(text('精华').findOnce()==null || text('最新').findOnce()==null){
         backTieList()
     }
 }

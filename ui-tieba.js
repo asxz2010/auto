@@ -45,7 +45,6 @@ ui.start.click(v=>{
                 })
             }
         }
-        // var e = engines.execScriptFile("./临时.js")
         var e = engines.execScriptFile("./ready-tieba.js")
         setTimeout(()=>{
             e.getEngine().emit("baString", JSON.stringify(baArray))
