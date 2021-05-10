@@ -1,5 +1,6 @@
 var Utils= require('Utils.js')
 
+<<<<<<< HEAD
 // let abstract_UI = id('thread_card_abstract').findOnce()
 // log(abstract_UI.text().length)
 // log(abstract_UI.text())
@@ -37,3 +38,9 @@ log(cardUI)
 
 // let aaa = desc('的头像').findOnce()
 // log(aaa)
+=======
+let abstract_UI = id('thread_card_abstract').findOnce()
+log(abstract_UI.text().length)
+log(abstract_UI.text())
+log(abstract_UI.text().substring(0,100))
+>>>>>>> 7a15025c844e9794fcfec2a595e1d060d5e753b5

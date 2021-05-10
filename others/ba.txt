@@ -1,1 +1,3 @@
-鬼灭之刃,2,gmzr.txt;进击的巨人,2,jjdjr.txt;网易阴阳师,2,wyyys.txt
+火影忍者,10,hyrz.txt;鬼灭之刃,10,gmzr.txt;进击的巨人,10,jjdjr.txt;网易阴阳师,10,wyyys.txt
+
+火影忍者,2,hyrz.txt;鬼灭之刃,2,gmzr.txt;进击的巨人,2,jjdjr.txt;网易阴阳师,2,wyyys.txt;海贼王,2,hzw.txt;
